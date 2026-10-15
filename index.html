@@ -6,35 +6,54 @@
 <style>
   /* Bố cục: một cột hẹp (tối đa 480px) kiểu điện thoại, hồ sơ ở trên, deal nổi bật, danh sách link, mạng xã hội, ghi chú affiliate cuối trang */
   :root {
-    --bg: #F2F4FA;
+    --bg: #F4F4F5;
     --surface: #FFFFFF;
-    --fg: #10142B;
-    --muted: #596081;
-    --line: #DCE0EE;
-    --accent: #2B3DF5;
+    --fg: #111113;
+    --muted: #636368;
+    --line: #DEDEE1;
+    --accent: #111113;
     --accent-ink: #FFFFFF;
-    --soft: #E5E8FF;
-    --deal: #E8431F;
-    --deal-soft: #FFE9E2;
+    --soft: #EAEAEC;
+    --deal: #D91E2F;
+    --deal-soft: #FCE3E5;
+    --cta: #D91E2F;
+    --cta-ink: #FFFFFF;
+    --bg-2: #E8E8EB;
+    --glow-a: rgba(217, 30, 47, 0.13);
+    --glow-b: rgba(17, 17, 19, 0.08);
+    --curve: rgba(17, 17, 19, 0.11);
+    --curve-accent: rgba(217, 30, 47, 0.42);
     --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --font-code: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0C0F20; --surface: #161A33; --fg: #EDEFFB; --muted: #9AA0C4; --line: #2A3054;
-      --accent: #8190FF; --accent-ink: #0C0F20; --soft: #222859; --deal: #FF8F6E; --deal-soft: #3A2220;
+      --bg: #0C0C0D; --surface: #17171A; --fg: #F3F3F4; --muted: #A0A0A6; --line: #2B2B2F;
+      --accent: #F3F3F4; --accent-ink: #0C0C0D; --soft: #232326; --deal: #FF6B76; --deal-soft: #3A1A1D;
+      --cta: #E5283A; --cta-ink: #FFFFFF;
+      --bg-2: #060607; --glow-a: rgba(229, 40, 58, 0.24); --glow-b: rgba(255, 255, 255, 0.08);
+      --curve: rgba(255, 255, 255, 0.11); --curve-accent: rgba(255, 70, 88, 0.5);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0C0F20; --surface: #161A33; --fg: #EDEFFB; --muted: #9AA0C4; --line: #2A3054;
-    --accent: #8190FF; --accent-ink: #0C0F20; --soft: #222859; --deal: #FF8F6E; --deal-soft: #3A2220;
+    --bg: #0C0C0D; --surface: #17171A; --fg: #F3F3F4; --muted: #A0A0A6; --line: #2B2B2F;
+    --accent: #F3F3F4; --accent-ink: #0C0C0D; --soft: #232326; --deal: #FF6B76; --deal-soft: #3A1A1D;
+    --cta: #E5283A; --cta-ink: #FFFFFF;
+    --bg-2: #060607; --glow-a: rgba(229, 40, 58, 0.24); --glow-b: rgba(255, 255, 255, 0.08);
+    --curve: rgba(255, 255, 255, 0.11); --curve-accent: rgba(255, 70, 88, 0.5);
     color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
   body {
-    background: var(--bg); color: var(--fg);
+    background:
+      radial-gradient(120% 55% at 90% -8%, var(--glow-a), transparent 62%),
+      radial-gradient(90% 45% at 0% 0%, var(--glow-b), transparent 66%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    background-color: var(--bg);
+    min-height: 100vh; position: relative;
+    color: var(--fg);
     font-family: var(--font-body); font-size: 15px; line-height: 1.5;
     padding-block: 28px 40px;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
@@ -42,6 +61,13 @@
   }
   .wrap { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
   a { color: inherit; text-decoration: none; }
+
+  /* Đường cong trang trí ở đầu trang */
+  .bg-art { position: absolute; top: 0; left: 0; right: 0; height: 560px; overflow: hidden; pointer-events: none; }
+  .bg-art svg { display: block; width: 100%; height: 100%; }
+  .bg-art path { fill: none; stroke: var(--curve); stroke-width: 1.2; }
+  .bg-art path.acc { stroke: var(--curve-accent); stroke-width: 1.6; }
+  .wrap { position: relative; z-index: 1; }
   a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
   .notice {
@@ -73,8 +99,8 @@
     font-weight: 600; font-size: 14px;
     transition: border-color .15s, transform .15s;
   }
-  .social:hover { border-color: var(--accent); transform: translateY(-1px); }
-  .social .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .social:hover { border-color: var(--cta); transform: translateY(-1px); }
+  .social .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cta); }
 
   .section { display: flex; flex-direction: column; gap: 12px; }
   .section-title {
@@ -91,7 +117,7 @@
   .feature-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .tag {
     font-family: var(--font-code); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 4px 9px; border-radius: 6px; background: var(--deal); color: #fff;
+    padding: 4px 9px; border-radius: 6px; background: var(--cta); color: var(--cta-ink);
   }
   .store { font-size: 13px; font-weight: 600; opacity: .85; }
   .feature h2 { margin: 0; font-size: 20px; line-height: 1.25; font-weight: 800; letter-spacing: -0.01em; text-wrap: balance; }
@@ -113,7 +139,7 @@
   }
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    background: var(--accent-ink); color: var(--accent);
+    background: var(--cta); color: var(--cta-ink);
     font-weight: 800; font-size: 14px; padding: 10px 18px; border-radius: 10px;
     flex: 0 0 auto;
   }
@@ -127,7 +153,7 @@
     padding: 12px 14px;
     transition: border-color .15s, transform .15s;
   }
-  .row:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .row:hover { border-color: var(--cta); transform: translateY(-1px); }
   .thumb {
     flex: 0 0 46px; height: 46px; border-radius: 12px;
     background: var(--soft); color: var(--accent);
@@ -141,6 +167,37 @@
     color: var(--deal); background: var(--deal-soft); padding: 3px 8px; border-radius: 6px;
   }
   .arrow { flex: 0 0 auto; color: var(--muted); }
+  .thumb { overflow: hidden; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* Dạng ô vuông (2 cột) */
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .tile {
+    display: flex; flex-direction: column; gap: 4px; min-width: 0;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: 8px 8px 12px;
+    transition: border-color .15s, transform .15s;
+  }
+  .tile:hover { border-color: var(--cta); transform: translateY(-1px); }
+  .tile-frame {
+    position: relative; display: block; aspect-ratio: 1 / 1; max-width: 100%;
+    border-radius: 10px; overflow: hidden; background: var(--soft); margin-bottom: 6px;
+  }
+  .tile-media { position: absolute; inset: 0; display: grid; place-items: center; }
+  .tile-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tile-letter { font-size: 44px; font-weight: 800; color: var(--accent); }
+  .tile-badge {
+    position: absolute; top: 8px; left: 8px;
+    font-family: var(--font-code); font-size: 11px; font-weight: 700;
+    background: var(--cta); color: var(--cta-ink); padding: 3px 7px; border-radius: 6px;
+  }
+  .tile-title {
+    padding: 0 4px; font-weight: 600; font-size: 14px; line-height: 1.3;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; overflow-wrap: anywhere;
+  }
+  .tile-sub { padding: 0 4px; font-size: 12px; color: var(--muted); }
+  @media (prefers-reduced-motion: reduce) { .tile { transition: none; } .tile:hover { transform: none; } }
 
   .foot { display: flex; flex-direction: column; gap: 6px; text-align: center; font-size: 12.5px; color: var(--muted); }
   .foot p { margin: 0; text-wrap: balance; }
@@ -159,6 +216,16 @@
   }
 </style>
 
+<div class="bg-art" aria-hidden="true">
+  <svg viewBox="0 0 480 560" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-20 130 C 70 40, 170 210, 280 120 S 450 30, 520 110"/>
+    <path d="M-20 175 C 80 85, 180 255, 290 165 S 455 75, 520 155"/>
+    <path class="acc" d="M-20 220 C 90 130, 190 300, 300 210 S 460 120, 520 200"/>
+    <path d="M-20 265 C 100 175, 200 345, 310 255 S 465 165, 520 245"/>
+    <path d="M-20 310 C 110 220, 210 390, 320 300 S 470 210, 520 290"/>
+    <path d="M-20 355 C 120 265, 220 435, 330 345 S 475 255, 520 335"/>
+  </svg>
+</div>
 <main class="wrap" id="app"></main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -167,7 +234,7 @@
    CẤU HÌNH: chỉ cần sửa phần này (tên, link, mã giảm giá...).
    Link affiliate: dán link rút gọn từ Shopee, Lazada, TikTok Shop...
    ===================================================================== */
-const SHOW_SAMPLE_NOTICE = true;   // đổi thành false khi bạn đã điền thông tin thật
+const SHOW_SAMPLE_NOTICE = false;   // đổi thành false khi bạn đã điền thông tin thật
 
 const PROFILE = {
   name: "Đức (Phi)",
@@ -182,32 +249,35 @@ const SOCIALS = [
   { name: "Zalo",      url: "https://zalo.me/0328372241" }
 ];
 
-const FEATURED = {
-  tag: "Deal hot",
-  store: "Shopee",
-  title: "Tai nghe Bluetooth chống ồn, pin 40 giờ",
-  now: "399.000đ",
-  was: "690.000đ",
-  code: "DUC30",
-  url: "https://shopee.vn/",
-  cta: "Xem deal"
-};
+const FEATURED = null //{
+//   tag: "Deal hot",
+//   store: "Shopee",
+//   title: "Tai nghe Bluetooth chống ồn, pin 40 giờ",
+//   now: "399.000đ",
+//   was: "690.000đ",
+//   code: "DUC30",
+//   url: "https://shopee.vn/",
+//   cta: "Xem deal"
+// };
 
+// layout: "grid" = ô vuông 2 cột; bỏ trống = dạng dòng.
+// image: tên file ảnh (cùng thư mục) hoặc link ảnh; để trống thì hiện chữ cái đầu.
 const SECTIONS = [
   {
     title: "Link affiliate",
+    layout: "grid",
     items: [
-      { title: "Sạc nhanh 65W gọn nhẹ",       sub: "Shopee",     url: "https://shopee.vn/",         badge: "-35%" },
-      { title: "Bàn phím cơ không dây",        sub: "Lazada",     url: "https://www.lazada.vn/",     badge: "-28%" },
-      { title: "Đèn LED quay video mini",      sub: "TikTok Shop", url: "https://www.tiktok.com/",   badge: "" },
-      { title: "Ba lô laptop chống nước",      sub: "Tiki",       url: "https://tiki.vn/",           badge: "-20%" }
+      { title: "Chảo Inox mình dùng",       sub: "Shopee",     url: "https://s.shopee.vn/qkHxBbvn8",         badge: "-35%", image: "ChaoInox.jpg" },
+      { title: "Film Fuji 200 mình hay mua",        sub: "Shopee",     url: "https://s.shopee.vn/AUunT5E3Qg",     badge: "-28%", image: "Fuji200.jpg"  },
+      { title: "Giấy rút TopGia to mình dùng",      sub: "Shopee", url: "https://s.shopee.vn/9APPskcEUL",   badge: "", image: "TopGia.jpg"  },
+      { title: "Ba lô tối giản mình dùng",      sub: "Shopee",       url: "https://s.shopee.vn/40hJjJHJ5v",           badge: "-20%", image: "Balo.jpg"  }
     ]
   },
   {
     title: "Khác",
     items: [
-      { title: "Đăng ký nhận deal qua Zalo",   sub: "Cập nhật mỗi ngày", url: "https://zalo.me/0900000000", badge: "" },
-      { title: "Hợp tác quảng cáo",            sub: "Liên hệ qua email", url: "https://www.facebook.com/tenban", badge: "" }
+//      { title: "Đăng ký nhận deal qua Zalo",   sub: "Cập nhật mỗi ngày", url: "https://zalo.me/0900000000", badge: "" },
+      { title: "Hợp tác quảng cáo",            sub: "Liên hệ qua email", url: "tienduc2001.congviec@gmail.com", badge: "" }
     ]
   }
 ];
@@ -264,6 +334,19 @@ const arrowSvg = () => {
   return s;
 };
 
+// Hiện ảnh sản phẩm; nếu không có ảnh hoặc ảnh lỗi thì hiện chữ cái đầu.
+function picInto(box, it, letter, letterClass) {
+  const showLetter = () => {
+    box.textContent = "";
+    box.appendChild(el("span", { class: letterClass, text: letter }));
+  };
+  if (it.image) {
+    const img = el("img", { src: it.image, alt: "", loading: "lazy" });
+    img.addEventListener("error", showLetter);
+    box.appendChild(img);
+  } else showLetter();
+}
+
 function render() {
   if (SHOW_SAMPLE_NOTICE) {
     const n = el("div", { class: "notice" });
@@ -312,10 +395,24 @@ function render() {
 
   // Danh sách link
   SECTIONS.forEach(sec => {
-    const list = el("div", { class: "list" });
+    const isGrid = sec.layout === "grid";
+    const list = el("div", { class: isGrid ? "grid" : "list" });
     sec.items.forEach(it => {
+      const letter = (it.title.trim()[0] || "?").toUpperCase();
+      if (isGrid) {
+        const media = el("span", { class: "tile-media" });
+        picInto(media, it, letter, "tile-letter");
+        list.appendChild(el("a", Object.assign({ class: "tile" }, ext(it.url)), [
+          el("span", { class: "tile-frame", "aria-hidden": "true" }, [media, it.badge ? el("span", { class: "tile-badge", text: it.badge }) : null]),
+          el("span", { class: "tile-title", text: it.title }),
+          el("span", { class: "tile-sub", text: it.sub })
+        ]));
+        return;
+      }
+      const thumb = el("span", { class: "thumb", "aria-hidden": "true" });
+      picInto(thumb, it, letter, "thumb-letter");
       list.appendChild(el("a", Object.assign({ class: "row" }, ext(it.url)), [
-        el("span", { class: "thumb", "aria-hidden": "true", text: (it.title.trim()[0] || "?").toUpperCase() }),
+        thumb,
         el("span", { class: "row-text" }, [el("span", { class: "row-title", text: it.title }), el("span", { class: "row-sub", text: it.sub })]),
         it.badge ? el("span", { class: "badge", text: it.badge }) : null,
         arrowSvg()
